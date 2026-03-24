@@ -1,0 +1,28 @@
+{
+  "response": [
+    {
+      "maintainer": "Yuki",
+      "oem": "Xiaomi",
+      "device": "peridot",
+      "filename": "Lunaris-AOSP-peridot-Community-3.8-GMS-2026032313.zip",
+      "download": "https://sourceforge.net/projects/rickroll/files/",
+      "timestamp": 1773284876,
+      "md5": "72f5d328671b811244dedd4929942f24",
+      "sha256": "b332f92742383b461038f8756d19dee035d3f52fa60e070318f0190abe1d78d2",
+      "size": 3789760655,
+      "version": "3.8",
+      "buildtype": "user",
+      "forum": "",
+      "gapps": "",
+      "firmware": "https://xmfirmwareupdater.com/archive/firmware/peridot/",
+      "modem": "",
+      "bootloader": "",
+      "recovery": "https://sourceforge.net/projects/ghosuto/files/Peridot/recovery/recovery.img/download",
+      "paypal": "",
+      "telegram": "https://t.me/+aVq_TSmHq0FhY2Y1",
+      "dt": "",
+      "common-dt": "",
+      "kernel": ""
+    }
+  ]
+}
