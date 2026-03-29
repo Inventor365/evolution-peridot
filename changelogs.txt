@@ -1,7 +1,7 @@
 #CHANGELOGS
-Peridot-Axion AOSP by Yuki 
+Peridot-Axion AOSP by Yuki
 =================================================================================
--Initial Build 
+-Initial Build
 -Enabled OTA
 -Fixed sepolicy denials and permission issues
 -slightly tweaked powerhint.json
