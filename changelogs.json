@@ -1,0 +1,10 @@
+#CHANGELOGS
+Peridot-Axion AOSP by Yuki 
+=================================================================================
+-Initial Build 
+-Enabled OTA
+-Fixed sepolicy denials and permission issues
+-slightly tweaked powerhint.json
+-improved touch and scorolling by adjusting surface flinger
+-added Detection Cleaner and VBMeta fix tiles in settings-personalizations-essentials-security
+-improved spoofing for banking apps detections
