@@ -1,13 +1,13 @@
 {
-    "response": [
-        {
-            "datetime": 1770558646,
-            "filename": "axion-2.5-BETA-20260328-UNOFFICIAL-GMS-peridot_2.zip",
-            "id": "4e032287aba9f4ae3cb26ee1",
-            "romtype": "UNOFFICIAL",
-            "size": 3893340723,
-            "url": "https:put_in_your_download_url",
-            "version": "2.5"
-        }
-    ]
+  "response": [
+    {
+      "datetime": 1230764400,
+      "filename": "ota-package.zip",
+      "id": "5eb63bbbe01eeed093cb22bb8f5acdc3",
+      "romtype": "nightly",
+      "size": 314572800,
+      "url": "https://example.com/ota-package.zip",
+      "version": "15.1"
+    }
+  ]
 }
