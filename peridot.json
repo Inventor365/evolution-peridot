@@ -1,27 +1,24 @@
-
 {
   "response": [
     {
       "maintainer": "Yuki",
-      "currently_maintained": false,
-      "oem": "",
-      "device": "Peridot",
-      "filename": "EvolutionX-16.0-20260222-peridot-11.6.1-Unofficial.zip",
-      "download": "https://store1.gofile.io/download/web/880a9aa6-f283-4917-a724-6b86a5007a96/EvolutionX-16.0-20260222-peridot-11.6.1-Unofficial.zip",
-      "timestamp": 1771432125,
-      "md5": "e68e9194385961e2a3ae4df078ce8d8f",
-      "sha256": "",
-      "size": "3887071232",
-      "version": "11.6.1",
-      "buildtype": "userdebug",
-      "forum": "",
-      "firmware": "2.0.208",
+      "currently_maintained": true,
+      "oem": "POCO",
+      "device": "POCO F6",
+      "filename": "LumineDroid-bellflower-20260725-COMMUNITY-peridot.zip",
+      "download": "https://sourceforge.net/projects/yukiverse",
+      "timestamp": 1782362328,
+      "md5": "6f21bafb3",
+      "sha256": "e9561a",
+      "size": 2974926554,
+      "version": "bellflower",
+      "buildtype": "user",
+      "forum": "https://t.me/+ZP26S4pxWtcwOGJl",
+      "firmware": "",
       "paypal": "",
-      "github": "",
+      "github": "https://github.com/Inventor365",
       "initial_installation_images": [],
       "extra_images": []
     }
   ]
 }
-
-
