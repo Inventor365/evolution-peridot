@@ -1,5 +1,208 @@
-CHANGELOGS
--------------------
-28/04/2026
--------------------
--updated source to latest source
+# POCO F6 / Redmi Turbo 3 (peridot)
+
+### September 2026 Release
+
+## Highlights
+
+* **Yuki Charging Service v5** — major charging subsystem overhaul with full 120W support, improved charging stability, removal of unwanted charging caps, and fixes for mid-charge current degradation.
+* **Thermal Engine Overhaul** — significantly reworked charging, gaming, high-performance, and daily-use thermal behavior, including improved regional parity.
+* **Adaptive AUTO Power Profiles** — smarter workload detection with dedicated handling for gaming, heavy compute, everyday use, and screen-off idle.
+* **Native Floating Quick Settings Panels** — redesigned Power Profile and Charging Control selectors with a cleaner Material 3 experience.
+* **XiaomiParts UI Overhaul** — refreshed Power Profile and Charging Control interfaces with live telemetry and Pixel/Material You styling.
+* **WALT & PowerHAL Refinements** — improved CPU scheduling behavior, burst responsiveness, power efficiency, and system stability.
+* **Telephony & Security Fixes** — VoLTE/VoWiFi caller ID improvements and updated Play Integrity / TrickyStore handling.
+
+---
+
+## Yuki Charging & 120W Fast Charging
+
+This release brings a substantial overhaul to the charging subsystem.
+
+* Reworked charging state handling for **near-zero background activity while unplugged**, improving idle efficiency.
+* Improved cable insertion and USB-PD/PPS negotiation handling to prevent charging state races and inconsistent activation.
+* Improved plug/unplug reliability and protection against transient charging-state changes.
+* **Full 120W charging capability unlocked**, removing previous software-imposed current restrictions.
+* Removed unwanted **80% / 85% charging limitations** across charging modes, allowing charging to reach 100% normally.
+* Fixed the previously observed **mid-charge current degradation**, including the significant current drop occurring during the lower-to-mid battery range.
+* Improved interaction between the charging system and thermal management so charging current remains consistent instead of being unnecessarily reclaimed by competing controls.
+* Strengthened temperature protection and ensured charging-related overrides are properly released when conditions require it.
+* Added improved charging diagnostics and telemetry for easier validation of charging behavior.
+
+**Result:** faster, more consistent charging with proper 120W capability, fewer charging-state glitches, and significantly cleaner behavior when the device is unplugged.
+
+---
+
+## Thermal Engine Overhaul
+
+The thermal configuration has been substantially reworked across charging, gaming, performance, and everyday workloads.
+
+### Charging
+
+* Improved charging thermal behavior using more appropriate battery-temperature handling.
+* Raised thermal operating limits to better match the device's actual charging capabilities.
+* Increased the available thermal ceiling for high-current charging while retaining hard safety limits.
+* Improved coordination between charging and thermal management to prevent unnecessary current reductions.
+
+### Gaming & High Performance
+
+Gaming profiles have received one of the largest tuning passes in this release.
+
+* Reduced overly aggressive stock throttling across gaming and high-performance modes.
+* Removed premature GPU restrictions that could force the GPU down to very low frequencies under relatively low temperatures.
+* Introduced a more gradual GPU thermal response instead of abrupt frequency drops.
+* Raised CPU thermal floors so sustained workloads retain significantly more performance before throttling.
+* Improved Prime, Gold, and Silver cluster behavior under sustained load.
+* Reworked battery thermal handling in gaming workloads for more predictable performance.
+* Updated high-performance and esports behavior to better reflect the actual thermal capabilities of the hardware.
+* Brought regional performance profiles in line with their global counterparts to eliminate unnecessary regional throttling differences.
+
+### Daily Usage
+
+* Removed unnecessary GPU restrictions from everyday-use profiles.
+* Improved Normal, Video, Navigation, and similar profiles to provide better responsiveness without sacrificing power efficiency.
+* Added a dedicated lightweight UI profile for common workloads such as messaging, social media, browsing, and general app usage.
+
+**Result:** less unnecessary throttling, smoother sustained gaming performance, better GPU responsiveness, and more consistent behavior across workloads.
+
+---
+
+## Adaptive AUTO Power Profile
+
+AUTO has been rebuilt into a much more intelligent workload-aware profile.
+
+Instead of treating AUTO as a simple middle ground, it now dynamically adapts the system according to what the device is actually doing.
+
+* Added automatic workload classification for everyday use, gaming, and sustained compute workloads.
+* Added dedicated **Heavy Compute** handling for workloads such as development, compilation, emulation, rendering, and other sustained CPU-heavy tasks.
+* Expanded application awareness across a broad range of games and demanding applications.
+* Improved GPU workload detection to prevent rapid switching caused by short-lived load spikes.
+* Added a dedicated low-power screen-off idle state to significantly reduce unnecessary background power consumption.
+* Improved transitions between active and idle states to prevent profile oscillation.
+* Charging-aware profile handling prevents AUTO from fighting the active charging configuration.
+* Improved service reliability so AUTO continues managing the device correctly even under Android background process management.
+* Improved profile state synchronization and restoration across reboots, charging sessions, and manual profile changes.
+
+### Power Profile Stability
+
+* Improved ownership and synchronization of profile state across SystemUI and XiaomiParts.
+* Fixed cases where the active profile could become unknown after charging completed.
+* Improved switching between AUTO and manually selected profiles.
+* Prevented stale background profile decisions from overwriting newly selected user profiles.
+
+**Result:** AUTO is now a genuine adaptive profile rather than simply a balanced preset — using more power when the workload actually needs it and backing off aggressively during light or idle usage.
+
+---
+
+## Power Profile & Charging Control UI
+
+Quick Settings controls have been redesigned around native floating panels.
+
+### Power Profiles
+
+* Added a native floating Power Profile selector directly from Quick Settings.
+* Supports **Balanced, Battery Saver, Performance, Gaming, and Auto**.
+* Added live selection indicators and cleaner profile presentation.
+* Improved transitions and interaction while keeping the Quick Settings shade available underneath.
+
+### Charging Control
+
+* Added a native floating Charging Control selector.
+* Quickly switch between **Slow, Fast, and Superfast** charging modes.
+* Added live status indication and dedicated mode presentation.
+
+### HTSR
+
+* Integrated High Touch Sampling Rate controls directly into the Power Profile experience.
+* Gaming and Performance modes can automatically enable HTSR.
+* Balanced, Battery Saver, and Auto baseline modes restore the normal touch configuration.
+* AUTO can dynamically increase touch sampling behavior when active gaming is detected.
+* Fixed the reliability issue where HTSR could revert shortly after being enabled.
+
+---
+
+## XiaomiParts — Material You / Pixel UI Overhaul
+
+Power Profile and Charging Control pages have been substantially redesigned.
+
+* New Material You / Pixel-inspired visual language.
+* Added live summary cards with active profile information and device telemetry.
+* Added battery temperature and charging wattage information where applicable.
+* Replaced cramped selectors with larger, easier-to-use profile cards.
+* Improved icons, descriptions, selection states, and overall hierarchy.
+* Renamed **Default → Balanced** throughout the user-facing interface.
+* Removed unnecessary debug information while retaining the underlying functionality.
+* Improved Android 16 compatibility and receiver handling.
+
+The result is a much cleaner and more cohesive settings experience that feels closer to the rest of the ROM.
+
+---
+
+## WALT Scheduler & Performance
+
+The CPU scheduler and performance stack received another round of refinement.
+
+* Enforced consistent **WALT governor behavior across all CPU clusters**.
+* Tuned scheduler migration behavior to allow demanding workloads to reach the Prime cluster more naturally.
+* Improved Prime-core scheduling behavior under sustained workloads.
+* Corrected performance-limit handling under WALT.
+* Reverted scheduler changes that were found to increase FPS variance and hurt low-percentile frame times.
+* Improved the balance between responsiveness and energy efficiency rather than simply forcing higher frequencies.
+
+### PowerHAL
+
+* Re-enabled CPU low-power behavior during interactive usage.
+* Tuned interaction boost duration and frequency floors for a better responsiveness/efficiency balance.
+* Improved CPU ramp-down behavior between short interactions.
+* Fixed a PowerHAL stability issue that could result in service crashes.
+* Added additional validation around performance configuration to prevent invalid tuning from causing PowerHAL failures.
+* Updated the default boot thermal state to a balanced Normal profile.
+
+**Result:** better burst responsiveness without permanently keeping high-performance cores active, smoother scheduler behavior, and improved sustained performance consistency.
+
+---
+
+## Telephony, Security & System
+
+### Telephony
+
+* Fixed incoming caller ID parsing issues affecting **VoLTE and VoWiFi** calls.
+
+### Play Integrity / TrickyStore
+
+* Updated attestation handling and compatibility.
+* Improved handling of security patch information and package-specific configurations.
+* Improved persistence and reboot stability.
+* Refined fingerprint and signature-spoofing behavior.
+
+### Audio
+
+* Improved compatibility for **ViPER4Android** and related audio modifications.
+
+### Connectivity & System
+
+* Improved Wi-Fi behavior and 5GHz preference.
+* Improved background roaming behavior for better connectivity/power balance.
+* Reduced unnecessary GPU profiling overhead.
+* Cleaned up system applications while preserving the stock Dialer and Messaging experience.
+* Restored Game Bar and Game Space functionality.
+
+---
+
+# Overall
+
+This release is primarily focused on **power management, charging, thermals, and sustained performance**.
+
+The biggest changes are not simply higher frequency limits or more aggressive performance settings. The underlying behavior has been reworked so the device can:
+
+* **Charge faster and more consistently**
+* **Actually utilize its 120W charging capability**
+* **Avoid unnecessary charging and thermal restrictions**
+* **Reduce screen-off idle drain**
+* **Adapt performance automatically to the workload**
+* **Sustain higher gaming performance before throttling**
+* **Maintain better responsiveness during everyday use**
+* **Scale back aggressively when the workload doesn't require performance**
+* **Keep CPU scheduling and power management more consistent**
+* **Provide a cleaner and more cohesive user experience**
+
+This release is essentially a pass focused on making the hardware behave closer to what it is actually capable of, while keeping efficiency and thermal safety intact.
