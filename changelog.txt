@@ -1,103 +1,48 @@
-================================================================================
-                    LUNARIS AOSP - OCTOBER RELEASE CHANGELOG
-                     Device: POCO F6 / Redmi Turbo 3 (peridot)
-================================================================================
+# LUNARIS ROM — RELEASE CHANGELOG (PERIDOT)
+**Changes upto November 11th, 2026**
 
-[DEVICE & PERFORMANCE]
-- Implemented dedicated game-session architecture integrated with Game Space
-- Optimized PowerHAL with calibrated ADPF PID controller and dynamic DDR/LLCC memory scaling
-- CPU & GPU frequency floors elevated for gaming profiles for better 1% lows
-- Intelligent thread placement: heaviest game workloads pinned to the Prime core for steady frame pacing
-- Realigned CPU scheduler (WALT) upmigration and busy hysteresis for higher daily battery efficiency
-- Overhauled gaming and daily thermal profiles to eliminate sudden 40°C UI lag and frequency drops
-- Thermal throttling trip points elevated across gaming modes to prevent premature core hotplugging
-- Smooth GPU scaling: lowered idle GPU floor down to 255 MHz while unlocking full clock boost during heavy rendering
-- Dual-launcher support: Pixel Launcher now shipped alongside Lunaris Launcher
+### 1. Hardware
+**Dolby**
+- Added per-mode Volume Leveler strength control (0–10).
 
-[CHARGING & BATTERY MANAGEMENT]
-- Introduced true Hardware Bypass Charging: powers the device directly from the charger without routing through or heating the battery
-- Added closed-loop net-zero bypass management to eliminate battery deficit during extreme gaming loads
-- New multi-stage predictive thermal current governors matching official HyperOS charging thermal curves
-- Real-time current slider synchronization and charging wattage/temperature telemetry
-- Fixed screen-off charging interruptions and false unplug detection logic
+### 2. DT
 
-[AUDIO SUBSYSTEM & SOUND ENHANCEMENTS]
-- Dolby Atmos:
-  * Profile retention fix: sound profile no longer drifts or resets to Dynamic during playback
-  * Independent per-mode acoustic tuning with separate speaker and headphone defaults
-  * Added AutoEQ headphone correction profile integration and per-band equalizer fine-tuning
-  * Paused background profile polling when the screen is turned off to save idle battery
-  * Prevented Dolby from preempting or muting secondary audio effects like ViPER4Android
-  * Full Material 3 Expressive UI overhaul with true AMOLED night theme and expanded translations
-- ViPER4Android FX:
-  * Updated to latest 64-bit DSP driver engine with full 16 KB page-size compatibility
-  * Modernized preset system with custom measured Lunaris sound profiles (Lunaris Balanced, Harman Reference, Deep Bass)
-  * Pre-seeded stock Dolby-curve speaker preset on clean installs
-  * Lifecycle-aware driver polling: stops querying audio effects in the background, eliminating idle battery drain
-- High-Resolution & Spatial Audio:
-  * Added software Bluetooth A2DP audio module with full QTI routing support
-  * Enabled high-resolution LHDCv5 Bluetooth codec streaming with sample rates up to 192 kHz
-  * Restored multichannel audio policy routes for native Dolby Atmos track detection in streaming apps (JioHotstar, etc.)
-  * Fixed channel configuration conflicts between ViPER4Android and system spatializer
+**Power, Performance & AUTO**
+- Refined AUTO app classification with CPU usage validation and dynamic game detection across various engines.
+- Improved screen-off power management.
+- Reworked Gaming and Performance profile handling with automatic fallback to AUTO after configurable idle timeouts.
+- Introduced improved game performance scaling based on measured CPU/GPU load.
+- Reworked Battery and Balanced profiles with improved screen-off power management.
+- Optimized VoIP, screen sharing and audio playback power handling.
+- Added AUTO state reporting, persistent status notification controls and improved profile transitions.
+- Refined CPU/GPU frequency limits, WALT tuning, DDR bandwidth prioritization and foreground CPU scheduling.
 
-[SECURITY, ATTESTATION & INTEGRITY]
-- Built-in TrickyStore Key Attestation Overhaul:
-  * Automatically targets Google Play Services, Play Store, and new app installations
-  * Fixed TEE probe stalls and prevented main-thread key generation hangs
-- System-Level Anti-Detection & Custom ROM Hiding:
-  * Dropped synthetic vbmeta generation in system init, restoring genuine hardware Root-of-Trust verification
-  * Hardened native libc anti-detection: concealed root directories, su binaries, and mount points from app probes
-  * Closed FUSE-stat package inspection methods used by detection tools
-  * Masked ROM-specific build properties and daemons from banking apps and security SDKs
-  * Security settings spoofing for Google Pay, Google Wallet, and payment applications
-- Singularity Integrity Engine:
-  * One-tap autonomous Canary fingerprint fetching with battery-friendly background renewal
-  * Smart tiered fingerprint rotation prioritizing latest Pixel flagship models to prevent traffic bans
-  * Direct official keybox download mirror integration with optimized non-blocking UI
+**Yuki Charging & Battery Care**
+- Introduced firmware-backed bypass charging with automatic monitoring and fallback handling.
+- Added Night Charging with a dedicated Quick Settings tile.
+- Introduced bypass-backed Charge Limit (70–95%) with improved charge isolation and limit enforcement.
+- Reworked charging current management for PD, PPS, USB and Superfast charging modes.
+- Added consistent temperature throttling across charging modes, including stricter thermal protection.
+- Improved charging stability, SOC reporting and cable-connected boot handling.
+- Integrated Night Charging status and charging controls into the system UI.
 
-[SYSTEM UI, GRAPHICS & THEMING]
-- Dynamic Bar & Island:
-  * Lockscreen music player made smoothly collapsible back into a compact pill
-  * Fixed music pill overlay conflicts with full-screen album art, depth wallpapers, and custom clocks
-  * Decoupled lockscreen music pill settings from status bar dynamic island controls
-  * Fixed lockscreen charging status visibility and refreshed battery percentage text
-- Quick Settings & Dialogs:
-  * Implemented native animated floating dialogs for Power Profiles and Charging controls
-  * Fluid landscape responsiveness with scrollable layouts for all dialog panels
-  * Added Quick Settings tiles for Game Mode, Power Profiles, and Smart Pixels
-- Graphics & Blur Optimizations:
-  * Removed cross-frame blur cache in RenderEngine that was causing micro-stutters and stale frames under Quick Settings
-  * Optimized glass blur rendering pipeline to significantly reduce GPU tile load latency
-  * Fixed per-frame blur shader recompilation during notification shade gestures
-  * Added user toggle to disable lockscreen wallpaper zoom animations
-  * Restored compact notification card styling in landscape mode
-  * Synchronized Pure Black theme with scheduled Dark Mode transitions immediately without requiring screen toggle
+**Audio, Haptics, Sensors & Device**
+- Integrated AndromedaHaptics.
+- Improved low-latency audio scheduling to reduce speaker crackling and audio underruns in games.
+- Added Duck Remote Key Provisioning (RKP) HAL support.
+- Optimized sensor notification handling and fixed AOD-related memory leaks.
+- Reduced unnecessary vendor audio, sensor and graphics logging.
+- Improved USB configuration persistence while restoring ADB and wireless debugging.
+- Updated device permissions and wakeup source labeling.
+- Refined default application packaging and removed obsolete KProfiles components.
 
-[KERNEL & HARDWARE SUBSYSTEMS]
-- KernelSU & SuSFS:
-  * Synced KernelSU with latest upstream ReSukiSU source
-  * Renamed su SELinux domain and file contexts to evade context-based root detectors
-  * Updated SuSFS to latest android14-6.1 upstream with improved inotify and filesystem spoofing
-- Scheduler & Power Tuning:
-  * Removed arbitrary CPU frequency floor hacks from the kernel scheduler
-  * Restored 2-second imminent alarm suspend protection and kernel task freezer diagnostics
-  * Disabled default cellular/BT wakelock blocker to eliminate mobile data disconnects and Bluetooth drops during sleep
-- Display & Touch:
-  * Touch subsystem adapted directly for hardware touch nodes (touch filters, sample rate bump, game mode)
-  * Eliminated auto-brightness hunting caused by screen reflections onto the ambient light sensor
-- Deep Sleep & Idle Drain:
-  * Addressed Wi-Fi (WCN6750) suspend failures to ensure reliable deep sleep
-  * Resolved security element and StrongBox KeyMint wake alarm conflicts
+### 3. kernel
 
-[APPS & CONNECTIVITY]
-- Yuki's Lunaris Updater:
-  * Intelligent geo-targeted mirror selection (Asia, Europe, Americas, Global) for lowest latency downloads
-  * Streamlined zip integrity verification allowing effortless local package installations
-- Game Space & NotGameTurbo:
-  * Direct Game Space controller integration in system Settings
-  * Integrated dedicated Game Mode quick settings tile and touch backend
-- ReVanced Integration:
-  * Updated bundled ReVanced prebuilt applications and native libraries to latest releases
-- Telephony & Connectivity:
-  * Enabled 5G NR ratchet and updated 5G icon carrier configurations
-  * Patched cellular voice module to resolve carrier call setup issues
+**Kernel — SM8635**
+- Improved bypass charging and charge-limit handling, reducing unnecessary thermal polling and battery reporting inconsistencies.
+- Optimized WALT frequency selection for improved CPU efficiency.
+- Fixed haptic effects, primitive composition and input latency.
+- Updated ReSukiSU/BakaSU and SUSFS components with SELinux and compatibility fixes.
+- Merged upstream LineageOS kernel updates, including Linux 6.1.176 and Qualcomm platform fixes.
+- Restored stock voltage and DDR bandwidth configurations at lower GPU frequencies to improve everyday efficiency.
+- Fixed Wi-Fi roaming synchronization handling to prevent completed network handoffs from being incorrectly aborted.
